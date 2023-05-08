@@ -2,10 +2,15 @@ package graphics;
 
 import com.googlecode.lanterna.TextColor;
 
-public class UIElement {
+public class MenuItem {
     private String content;
     private TextColor fgColor;
     private TextColor bgColor;
+    public MenuItem(String content, TextColor fg, TextColor bg){
+        this.content = content;
+        this.fgColor = fg;
+        this.bgColor = bg;
+    }
 
     public TextColor getFgColor() {
         return fgColor;
