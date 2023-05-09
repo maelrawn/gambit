@@ -40,7 +40,7 @@ public class Pawn extends ChessPiece {
                  || board.hasPlayerAt(nextX, nextY+1))){
             this.threatenedSpaces = new int[][]{{nextX, nextY-1}, {nextX, nextY+1}};
         }
-        else this.threatenedSpaces = new int[][]{{x, y}, {nextX, nextY}};
+        else this.threatenedSpaces = new int[][]{{nextX, nextY}};
         return threatenedSpaces;
     }
 }

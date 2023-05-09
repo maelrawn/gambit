@@ -11,6 +11,10 @@ public class Menu implements RenderableObject{
     private int y;
     private String title;
 
+    public void updateItemValue(int newValue, int idx){
+        menuItems.get(idx).setContent(newValue);
+    }
+
     public String getTitle() {
         return title;
     }
@@ -42,14 +46,14 @@ public class Menu implements RenderableObject{
         int maxlength = 0;
         int rows = menuItems.size();
         for (MenuItem element : menuItems) {
-            int length = element.getContent().length();
+            int length = element.getText().length();
             if (length > maxlength)
                 maxlength = length;
         }
         final TextGraphics renderer = screen.newTextGraphics();
         for (int i = 0; i < rows; i++) {
             try {
-                String s = menuItems.get(i).getContent();
+                String s = menuItems.get(i).getText();
                 s = String.format("%-" + (maxlength) + "s", s);
                 renderer.setForegroundColor(menuItems.get(i).getFgColor());
                 renderer.setBackgroundColor(menuItems.get(i).getBgColor());

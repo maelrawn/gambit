@@ -7,17 +7,16 @@ import graphics.ChessBoardGraphics;
 import pieces.ChessPiece;
 import pieces.Player;
 import cursor.Cursor;
+import state.Spawner;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.concurrent.LinkedBlockingQueue;
 
 public class ChessBoard {
     public static int x;
     public static int y;
     public static final int sideLength = 8;
     private Cursor cursor;
+    private Spawner spawner = new Spawner();
     public ChessBoard(int x, int y){
         ChessBoard.x = x;
         ChessBoard.y = y;
@@ -43,6 +42,14 @@ public class ChessBoard {
     public boolean hasPlayerAt(int x, int y){
         if (player.getX() == x && player.getY() == y){
             return true;
+        }
+        return false;
+    }
+    public boolean hasPieceAt(int x, int y){
+        for (ChessPiece piece:enemyPieces) {
+            if(piece.getX() == x && piece.getY() == y){
+                return piece.isAlive();
+            }
         }
         return false;
     }
@@ -108,13 +115,27 @@ public class ChessBoard {
         }
         player.draw(screen);
         cursor.draw(screen);
+        spawner.draw(screen);
     }
     public void actorMove(){
+        player.playerMove(this, new int[]{cursor.getX(), cursor.getY()});
         for(ChessPiece actor: enemyPieces){
             if (actor.isAlive()){
                 actor.updateThreatenedSpaces(this);
                 actor.move(this, new int[]{player.getX(), player.getY()});
             }
         }
+    }
+    public void generateSpawnedPiece(Screen screen){
+        spawner.spawnPiece();
+        spawner.draw(screen);
+    }
+    public void spawnPiece(Screen screen){
+        ChessPiece piece = spawner.getSpawningPiece();
+        spawner.erasePieceGraphic(screen);
+        piece.setX(spawner.getEntryPoint()[0]);
+        piece.setY(spawner.getEntryPoint()[1]);
+        piece.updateThreatenedSpaces(this);
+        enemyPieces.add(piece);
     }
 }

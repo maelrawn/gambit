@@ -3,10 +3,12 @@ package graphics;
 import com.googlecode.lanterna.TextColor;
 
 public class MenuItem {
-    private String content;
+    private String label;
+    private int content;
     private TextColor fgColor;
     private TextColor bgColor;
-    public MenuItem(String content, TextColor fg, TextColor bg){
+    public MenuItem(String label, int content, TextColor fg, TextColor bg){
+        this.label = label;
         this.content = content;
         this.fgColor = fg;
         this.bgColor = bg;
@@ -28,11 +30,14 @@ public class MenuItem {
         this.bgColor = bgColor;
     }
 
-    public String getContent() {
+    public int getContent() {
         return content;
     }
+    public void setLabel(String label){ this.label = label; }
+    public String getText(){ return label + " " + String.valueOf(content); }
 
-    public void setContent(String content) {
+    public void setContent(int content) {
         this.content = content;
     }
+
 }

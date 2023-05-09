@@ -43,7 +43,7 @@ public class Queen extends ChessPiece {
         }
         ptr += lengths[3];
         for(int i = 0; i < lengths[4]; i++){
-            openSpaces[i] = new int[]{x + i, y + i};
+            openSpaces[ptr + i] = new int[]{x + i, y + i};
         }
         ptr += lengths[4];
         for(int i = 0; i < lengths[5]; i++){

@@ -20,12 +20,6 @@ public class ChessBoardGraphics implements RenderableObject{
         this.x = x;
         this.y = y;
     }
-    public static int getAbsX(int x){
-        return x + ChessBoard.x;
-    }
-    public static int getAbsY(int y){
-        return y + ChessBoard.y;
-    }
     public int getX() {
         return x;
     }
