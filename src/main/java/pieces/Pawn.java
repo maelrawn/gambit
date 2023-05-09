@@ -25,7 +25,7 @@ public class Pawn extends ChessPiece {
         }
         xDir = hor * neg;
         yDir = (1 - hor) * neg;
-    }
+    };
     @Override
     int[][] findPaths(ChessBoard board, int x, int y) {
         int nextX = x + xDir;
@@ -40,7 +40,10 @@ public class Pawn extends ChessPiece {
                  || board.hasPlayerAt(nextX, nextY+1))){
             this.threatenedSpaces = new int[][]{{nextX, nextY-1}, {nextX, nextY+1}};
         }
-        else this.threatenedSpaces = new int[][]{{nextX, nextY}};
+        else {
+            this.threatenedSpaces = new int[][]{{nextX, nextY}};
+        }
+        threatenedSpaces = removeSelfFromThreatenedSpaces();
         return threatenedSpaces;
     }
 }

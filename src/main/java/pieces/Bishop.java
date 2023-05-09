@@ -8,7 +8,7 @@ public class Bishop extends ChessPiece{
         this.y = y;
         this.graphic = 'B';
         this.type = pieceTypes.Bishop;
-    }
+    };
     @Override
     int[][] findPaths(ChessBoard board, int x, int y) {
         int[] lengths = new int[4];
@@ -34,6 +34,7 @@ public class Bishop extends ChessPiece{
             openSpaces[ptr + i] = new int[]{x - i, y - i};
         }
         this.threatenedSpaces = openSpaces;
+        threatenedSpaces = removeSelfFromThreatenedSpaces();
         return threatenedSpaces;
     }
 }

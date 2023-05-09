@@ -10,7 +10,7 @@ public class Knight extends ChessPiece {
         this.y = y;
         this.graphic = 'N';
         this.type = pieceTypes.Knight;
-    }
+    };
     @Override
     int[][] findPaths(ChessBoard board, int x, int y){
         ArrayList<int[]> spaces =  new ArrayList<int[]>();
@@ -42,6 +42,8 @@ public class Knight extends ChessPiece {
         for(int i = 0; i < spaces.size(); i++){
             openSpaces[i] = spaces.get(i);
         }
-        return openSpaces;
+        threatenedSpaces = openSpaces;
+        threatenedSpaces = removeSelfFromThreatenedSpaces();
+        return threatenedSpaces;
     }
 }

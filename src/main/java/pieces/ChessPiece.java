@@ -21,12 +21,30 @@ public abstract class ChessPiece implements RenderableObject {
         King,
         Knight,
         Pawn,
-        Rook,
         Queen,
+        Rook,
         Player;
     }
     protected int[][] threatenedSpaces;
     abstract int[][] findPaths(ChessBoard board, int x, int y);
+    public int[][] removeSelfFromThreatenedSpaces() {
+        int size = threatenedSpaces.length;
+        for (int[] space : threatenedSpaces) {
+            if (this.x == space[0] && this.y == space[1]) {
+                size -= 1;
+            }
+        }
+        int[][] correctedSpaces = new int[size][2];
+        int offset = 0;
+        for (int i = 0; i < size; i++) {
+            if (this.x == threatenedSpaces[i + offset][0] && this.y == threatenedSpaces[i + offset][1]) {
+                offset += 1;
+            }
+            correctedSpaces[i] = threatenedSpaces[i + offset];
+        }
+        threatenedSpaces = correctedSpaces;
+        return threatenedSpaces;
+    }
     protected int searchLine(ChessBoard board, int x, int y, int xdir, int ydir){
         int length = 1;
         int currx = x + xdir;
@@ -84,7 +102,7 @@ public abstract class ChessPiece implements RenderableObject {
         return this.isAlive;
     }
     public void draw(Screen screen) {
-        System.out.println(this);
+//        System.out.println(this);
         int absX = this.x + ChessBoard.x;
         int absY = this.y + ChessBoard.y;
         TextGraphics render = screen.newTextGraphics();
@@ -110,9 +128,9 @@ public abstract class ChessPiece implements RenderableObject {
                 return new King(0, 0);
             case 2:
                 return new Knight(0, 0);
-            case 4:
+            case 3:
                 return new Queen(0, 0);
-            case 5:
+            case 4:
                 return new Rook(0, 0);
         }
         return new Pawn(0,0);

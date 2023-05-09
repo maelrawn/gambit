@@ -1,7 +1,9 @@
 package graphics;
 import java.util.ArrayList;
 
+import board.ChessBoard;
 import com.googlecode.lanterna.SGR;
+import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.graphics.TextGraphics;
 import com.googlecode.lanterna.screen.Screen;
 
@@ -14,7 +16,22 @@ public class Menu implements RenderableObject{
     public void updateItemValue(int newValue, int idx){
         menuItems.get(idx).setContent(newValue);
     }
-
+    public Menu(){
+        TextColor fgMenuItemColor = TextColor.ANSI.CYAN;
+        TextColor bgMenuItemColor = TextColor.ANSI.BLACK_BRIGHT;
+        MenuItem numKings = new MenuItem("Kings: ", 0, fgMenuItemColor, bgMenuItemColor);
+        MenuItem numQueens = new MenuItem("Queens: ", 0, fgMenuItemColor, bgMenuItemColor);
+        MenuItem numBishops = new MenuItem("Bishops: ",0, fgMenuItemColor, bgMenuItemColor);
+        MenuItem numKnights = new MenuItem("kNights: ", 0, fgMenuItemColor, bgMenuItemColor);
+        MenuItem numRooks = new MenuItem("Rooks: ", 0, fgMenuItemColor, bgMenuItemColor);
+        add_item(numBishops);
+        add_item(numKings);
+        add_item(numKnights);
+        add_item(numQueens);
+        add_item(numRooks);
+        setX(ChessBoard.x + ChessBoard.sideLength + 2);
+        setY(ChessBoard.y);
+    }
     public String getTitle() {
         return title;
     }

@@ -33,7 +33,8 @@ public class InputHandler {
                 break;
             case 'k':
                 if(board.getPlayer().changePathingType(ChessPiece.pieceTypes.King)){
-                    board.getPlayer().updateThreatenedSpaces(board);                    board.draw(screen);
+                    board.getPlayer().updateThreatenedSpaces(board);
+                    board.draw(screen);
                 }
                 break;
             case 'n':

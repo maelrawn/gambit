@@ -7,7 +7,7 @@ public class Rook extends ChessPiece {
         this.y = y;
         this.graphic = 'R';
         this.type = pieceTypes.Rook;
-    }
+    };
     @Override
     public int[][] findPaths(ChessBoard board, int x, int y){
         int[] lengths = new int[4];
@@ -33,6 +33,7 @@ public class Rook extends ChessPiece {
             openSpaces[ptr + i] = new int[]{x, y + i};
         }
         this.threatenedSpaces = openSpaces;
+        threatenedSpaces = removeSelfFromThreatenedSpaces();
         return threatenedSpaces;
     }
 }

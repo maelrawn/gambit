@@ -15,7 +15,7 @@ public class Spawner implements RenderableObject {
     ChessPiece spawningPiece;
     public Spawner(){
         spawnPiece();
-    }
+    };
     public void erasePieceGraphic(Screen screen){
         TextGraphics render = screen.newTextGraphics();
         render.setCharacter(spawningPiece.getX() + ChessBoard.x, spawningPiece.getY() + ChessBoard.y, ' ');

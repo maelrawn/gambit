@@ -10,7 +10,7 @@ public class King extends ChessPiece {
         this.y = y;
         this.graphic = 'K';
         this.type = pieceTypes.King;
-    }
+    };
     @Override
     int[][] findPaths(ChessBoard board, int x, int y){
         int numSpaces = 0;
@@ -29,6 +29,8 @@ public class King extends ChessPiece {
                 }
             }
         }
-        return newSpaces;
+        threatenedSpaces = newSpaces;
+        threatenedSpaces = removeSelfFromThreatenedSpaces();
+        return threatenedSpaces;
     }
 }

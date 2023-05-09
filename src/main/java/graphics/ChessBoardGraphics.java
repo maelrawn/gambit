@@ -1,12 +1,8 @@
 package graphics;
 
-import board.ChessBoard;
 import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.graphics.TextGraphics;
 import com.googlecode.lanterna.screen.Screen;
-import org.w3c.dom.Text;
-
-import java.util.ArrayList;
 
 public class ChessBoardGraphics implements RenderableObject{
     TextColor dark;
@@ -23,15 +19,12 @@ public class ChessBoardGraphics implements RenderableObject{
     public int getX() {
         return x;
     }
-
     public void setX(int x) {
         this.x = x;
     }
-
     public int getY() {
         return y;
     }
-
     public void setY(int y) {
         this.y = y;
     }

@@ -66,25 +66,12 @@ public class ChessBoard {
     private boolean isInBounds(int x, int y){
         return (0 <= x && x < 8 && 0 <= y && y < 8);
     }
-    public boolean isOpenSpace(int x, int y){
-        if(!isInBounds(x, y)){
-            return false;
-        }
-        for (ChessPiece piece:enemyPieces) {
-            if (    piece.isAlive()
-                    && piece.getX() == x
-                    && piece.getY() == y){
-                return false;
-            }
-        }
-        return true;
-    }
     public boolean isOpenSpace(ChessPiece self, int x, int y){
         if(!isInBounds(x, y)){
             return false;
         }
-        System.out.println(player.getCurrentPathingPiece());
-        System.out.println(self);
+//        System.out.println(player.getCurrentPathingPiece());
+//        System.out.println(self);
         if(self == player.getCurrentPathingPiece()){ //ordering like this allows player piece to land on enemies
             return true;
         }

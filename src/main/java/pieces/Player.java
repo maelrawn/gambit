@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class Player extends ChessPiece {
     private ChessPiece currentPathingPiece;
-    private int[] heldPieces = new int[]{1, Integer.MAX_VALUE / 1, 1, 1, 1, 1};
+    private int[] heldPieces = new int[]{1, 999, 1, 1, 1, 1};
     private ArrayList<ChessPiece> internalPieces = new ArrayList<ChessPiece>();
     public Player(int x, int y){
         this.x = x;
@@ -19,9 +19,12 @@ public class Player extends ChessPiece {
         internalPieces.add(new King(x, y));
         internalPieces.add(new Knight(x, y));
         internalPieces.add(new Pawn(x, y));
-        internalPieces.add(new Rook(x, y));
         internalPieces.add(new Queen(x, y));
+        internalPieces.add(new Rook(x, y));
         currentPathingPiece = internalPieces.get(1);
+    }
+    public int[] getHeldPieces(){
+        return heldPieces;
     }
     public boolean expendPiece(){
         heldPieces[currentPathingPiece.getType().ordinal()] -= 1;
@@ -63,6 +66,7 @@ public class Player extends ChessPiece {
     @Override
     public int[][] findPaths(ChessBoard board, int x, int y) {
         threatenedSpaces = this.currentPathingPiece.findPaths(board, this.x, this.y);
+        threatenedSpaces = removeSelfFromThreatenedSpaces();
         return threatenedSpaces;
     }
 }
