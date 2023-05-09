@@ -4,6 +4,7 @@ import com.googlecode.lanterna.screen.Screen;
 import com.googlecode.lanterna.terminal.*;
 import graphics.Menu;
 import graphics.MenuItem;
+import input.InputHandler;
 import pieces.*;
 
 public class GambitGame {
@@ -34,25 +35,27 @@ public class GambitGame {
             MenuItem numRooks = new MenuItem("Rooks: 0",
                                                 TextColor.ANSI.CYAN,
                                                 TextColor.ANSI.BLACK_BRIGHT);
-            MenuItem numPawns = new MenuItem("Pawns: 0",
-                                                TextColor.ANSI.CYAN,
-                                                TextColor.ANSI.BLACK_BRIGHT);
+//            MenuItem numPawns = new MenuItem("Pawns: 0",
+//                                                TextColor.ANSI.CYAN,
+//                                                TextColor.ANSI.BLACK_BRIGHT);
             menu.add_item(numKings);
             menu.add_item(numQueens);
             menu.add_item(numKnights);
-            menu.add_item(numPawns);
             menu.add_item(numRooks);
             menu.add_item(numBishops);
-            ChessBoard board = new ChessBoard(25, 10);
+            ChessBoard board = new ChessBoard(20, 10);
             menu.setX(ChessBoard.x + ChessBoard.sideLength + 2);
             menu.setY(ChessBoard.y);
             menu.draw(screen);
-            board.addActor(new Bishop(4, 4));
-            board.getPlayer().setX(3);
-            board.getPlayer().setY(4);
-            board.pathfind();
-            board.draw(screen);
-            screen.refresh();
+            board.addActor(new Queen(0,0));
+            InputHandler input = new InputHandler();
+            while(board.getPlayer().isAlive()) {
+                board.actorPathfind();
+                board.draw(screen);
+                screen.refresh();
+                while(!input.processInput(input.getInput(screen), board, screen)){}
+                board.actorMove();
+            }
         } catch(Exception e) {
             e.printStackTrace();
         }

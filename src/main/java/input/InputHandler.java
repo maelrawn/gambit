@@ -1,12 +1,10 @@
 package input;
 
 import board.ChessBoard;
-import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.screen.Screen;
 import cursor.Cursor;
+import pieces.ChessPiece;
 import pieces.Player;
-
-import java.util.ArrayList;
 
 public class InputHandler {
     public static Character getInput(Screen screen){
@@ -18,42 +16,63 @@ public class InputHandler {
         }
         return result;
     }
-    public static boolean processInput( Character input, Cursor cursor,
-                                        ChessBoard board, Player player){
-        switch (input){
+    public static boolean processInput( Character input, ChessBoard board, Screen screen){
+        switch (Character.toLowerCase(input)){
             case 'w':
-                //return cursormovement(up)
-                break;
             case 'a':
-                //return cursormovement(left)
-                break;
             case 's':
-                //return cursormovement(down)
-                break;
             case 'd':
-                //return cursormovement(right)
-                break;
-            case 'q':
-                //return player.switchpiece(queen)
-                break;
-            case 'n':
-                //return player.switchpiece(knight)
-                break;
-            case 'k':
-                //return player.switchpiece(king)
-                break;
-            case 'r':
-                //return player.switchpiece(king)
-                break;
-            case 'p':
-                //return player.switchpiece(pawn)
+                board.getCursor().moveCursor(input, 8, 8, 0, 0);
+                board.draw(screen);
                 break;
             case 'b':
-                //return player.switchpiece(bishop)
+                if(board.getPlayer().changePathingType(ChessPiece.pieceTypes.Bishop)){
+                    board.getPlayer().updateThreatenedSpaces(board);
+                    board.draw(screen);
+                }
+                break;
+            case 'k':
+                if(board.getPlayer().changePathingType(ChessPiece.pieceTypes.King)){
+                    board.getPlayer().updateThreatenedSpaces(board);                    board.draw(screen);
+                }
+                break;
+            case 'n':
+                if(board.getPlayer().changePathingType(ChessPiece.pieceTypes.Knight)) {
+                    board.getPlayer().updateThreatenedSpaces(board);
+                    board.draw(screen);
+                }
+                break;
+            //case 'p':
+                //return player.switchpiece(pawn)
+                //break;
+            case 'r':
+                if(board.getPlayer().changePathingType(ChessPiece.pieceTypes.Rook)){
+                    board.getPlayer().updateThreatenedSpaces(board);
+                    board.draw(screen);
+                }
+                break;
+            case 'q':
+                if(board.getPlayer().changePathingType(ChessPiece.pieceTypes.Queen)){
+                    board.getPlayer().updateThreatenedSpaces(board);
+                    board.draw(screen);
+                }
                 break;
             case '\n':
-                //return board.makemove(cursor.getposition)
+                Player player = board.getPlayer();
+                Cursor cursor = board.getCursor();
+                int[] target = new int[]{cursor.getX(), cursor.getY()};
+                for (int[] space:player.findPaths(board, player.getX(), player.getY())) {
+                    if (space[0] == cursor.getX() && space[1] == cursor.getY()) {
+                        player.move(board, target);
+                        return true;
+                    }
+                }
                 break;
+        }
+        try {
+            screen.refresh();
+        } catch(Exception e) {
+            e.printStackTrace();
         }
         return false;
     }

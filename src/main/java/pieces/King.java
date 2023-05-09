@@ -5,8 +5,12 @@ import com.googlecode.lanterna.screen.Screen;
 import graphics.RenderableObject;
 
 public class King extends ChessPiece {
-    private final char graphic = 'K';
-
+    public King(int x, int y){
+        this.x = x;
+        this.y = y;
+        this.graphic = 'K';
+        this.type = pieceTypes.King;
+    }
     @Override
     int[][] findPaths(ChessBoard board, int x, int y){
         int numSpaces = 0;
@@ -14,13 +18,13 @@ public class King extends ChessPiece {
         int[][] newSpaces = new int[numSpaces][2];
         for(int xdir = -1; xdir < 2; xdir++){
             for(int ydir = -1; ydir < 2; ydir++){
-                if(board.isOpenSpace(x + xdir, y + ydir)){
+                if(board.isOpenSpace(this,x + xdir, y + ydir)){
                     numSpaces++;
                     newSpaces = new int[numSpaces][2];
                     for(int i = 0; i < spaces.length; i++){
                         newSpaces[i] = spaces[i];
                     }
-                    newSpaces[newSpaces.length] = new int[]{x + xdir, y + ydir};
+                    newSpaces[newSpaces.length-1] = new int[]{x + xdir, y + ydir};
                     spaces = newSpaces;
                 }
             }

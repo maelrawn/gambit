@@ -13,6 +13,16 @@ public abstract class ChessPiece implements RenderableObject {
     protected int y = 0;
     protected boolean isAlive = true;
     protected char graphic = 'C';
+    protected pieceTypes type;
+    public enum pieceTypes {
+        Bishop,
+        King,
+        Knight,
+        Pawn,
+        Rook,
+        Queen,
+        Player;
+    }
     protected int[][] threatenedSpaces;
     abstract int[][] findPaths(ChessBoard board, int x, int y);
     protected int searchLine(ChessBoard board, int x, int y, int xdir, int ydir){
@@ -29,28 +39,41 @@ public abstract class ChessPiece implements RenderableObject {
     public int[] selectSpace(int[] target, int[][] available) {
         int[] bestcoord = new int[2];
         double mindist = Double.MAX_VALUE;
-        double currdist = 0;
+        double currdist = Double.MAX_VALUE;
         for ( int[] coord: available ) {
-            currdist =    sqrt(pow(Double.valueOf(coord[0] - target[0]),2))
-                        + sqrt(pow(Double.valueOf(coord[1] - target[1]), 2));
-            if( currdist <= mindist ){
+            currdist = sqrt(pow(Double.valueOf(coord[0] - target[0]),2)
+                            + pow(Double.valueOf(coord[1] - target[1]), 2));
+            if( currdist < mindist ){
                 mindist = currdist;
+                bestcoord = coord;
             }
-            bestcoord = coord;
         }
         return bestcoord;
     }
-    public boolean move(ChessBoard board){
-        int[] target = new int[]{board.getPlayer().getX(), board.getPlayer().getY()};
-        threatenedSpaces =  findPaths(board, this.x, this.y);
+    public boolean move(ChessBoard board, int[] target){
+        threatenedSpaces = findPaths(board, this.x, this.y);
         int[] space = selectSpace(target, threatenedSpaces);
-        setX(space[0]);
-        setY(space[1]);
         if(board.hasPlayerAt(space[0], space[1])){
             board.getPlayer().setAlive(false);
+            this.x = space[0];
+            this.y = space[1];
             return false;
         }
+        else if(board.isOpenSpace(this, space[0], space[1])) {
+            if(this.type == pieceTypes.Player){
+                pieceTypes type = board.killPieceAt(space[0], space[1]);
+                board.getPlayer().addPiece(type);
+            }
+            this.x = space[0];
+            this.y = space[1];
+        }
         return true;
+    }
+    public void updateThreatenedSpaces(ChessBoard board){
+        threatenedSpaces = findPaths(board, x, y);
+    }
+    public pieceTypes getType(){
+        return this.type;
     }
     public void setAlive(boolean alive){
         this.isAlive = alive;
@@ -59,14 +82,19 @@ public abstract class ChessPiece implements RenderableObject {
         return this.isAlive;
     }
     public void draw(Screen screen) {
-        int absX = getX() + ChessBoard.x;
-        int absY = getY() + ChessBoard.y;
+        int absX = this.x + ChessBoard.x;
+        int absY = this.y + ChessBoard.y;
         TextGraphics render = screen.newTextGraphics();
         render.setCharacter(absX, absY, this.getGraphic());
+        render.setForegroundColor(TextColor.ANSI.WHITE_BRIGHT);
+        render.setBackgroundColor(TextColor.ANSI.RED_BRIGHT);
+        if(this.graphic == 'X'){
+            render.setBackgroundColor(TextColor.ANSI.CYAN);
+        }
         for (int[] space : threatenedSpaces) {
-            char renderChar = screen.getBackCharacter(absX + space[0], absY + space[1]).getCharacter();
-            render.setBackgroundColor(TextColor.ANSI.RED);
-            render.setCharacter(absX + space[0], absY + space[1], renderChar);
+            System.out.println(String.valueOf(ChessBoard.x + space[0]) + " " + String.valueOf(ChessBoard.y + space[1]));
+            char renderChar = screen.getBackCharacter(ChessBoard.x + space[0], ChessBoard.y + space[1]).getCharacter();
+            render.setCharacter(ChessBoard.x + space[0], ChessBoard.y + space[1], renderChar);
         }
     }
 

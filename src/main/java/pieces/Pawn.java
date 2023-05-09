@@ -5,13 +5,13 @@ import board.ChessBoard;
 import java.util.Random;
 
 public class Pawn extends ChessPiece {
-    private final char graphic = 'P';
-
     int xDir = 0;
     int yDir = 0;
     public Pawn(int x, int y){
         this.x = x;
         this.y = y;
+        this.graphic = 'P';
+        this.type = pieceTypes.Pawn;
         int hor = 0;
         int neg = 1;
         Random random = new Random();
@@ -33,13 +33,14 @@ public class Pawn extends ChessPiece {
         if ( x == nextX
                 && (board.hasPlayerAt(nextX-1, nextY)
                 || board.hasPlayerAt(nextX+1, nextY))){
-            return new int[][]{{nextX-1, nextY}, {nextX+1, nextY}};
+            this.threatenedSpaces = new int[][]{{nextX-1, nextY}, {nextX+1, nextY}};
         }
         else if ( y == nextY
                 && (board.hasPlayerAt(nextX, nextY-1)
                  || board.hasPlayerAt(nextX, nextY+1))){
-            return new int[][]{{nextX, nextY-1}, {nextX, nextY+1}};
+            this.threatenedSpaces = new int[][]{{nextX, nextY-1}, {nextX, nextY+1}};
         }
-        else return new int[][]{{x, y}, {nextX, nextY}};
+        else this.threatenedSpaces = new int[][]{{x, y}, {nextX, nextY}};
+        return threatenedSpaces;
     }
 }

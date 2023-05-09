@@ -2,7 +2,12 @@ package pieces;
 
 import board.ChessBoard;
 public class Rook extends ChessPiece {
-    private final char graphic = 'R';
+    public Rook(int x, int y){
+        this.x = x;
+        this.y = y;
+        this.graphic = 'R';
+        this.type = pieceTypes.Rook;
+    }
     @Override
     public int[][] findPaths(ChessBoard board, int x, int y){
         int[] lengths = new int[4];
@@ -27,6 +32,7 @@ public class Rook extends ChessPiece {
         for(int i = 0; i < lengths[3]; i++){
             openSpaces[ptr + i] = new int[]{x, y + i};
         }
-        return openSpaces;
+        this.threatenedSpaces = openSpaces;
+        return threatenedSpaces;
     }
 }
